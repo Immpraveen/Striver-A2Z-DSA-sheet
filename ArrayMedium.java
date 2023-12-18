@@ -67,22 +67,39 @@ class ArrayMedium {
          * leader(test);
          */
 
+        /*
+         * // LongestConsecutiveSubsequence
+         * int[] test = { 100, 200, 1, 3, 2, 4 };
+         * System.out.print(longConsecutiveSubsequence(test) + " ");
+         */
+
+        /*
+         * //ZeroMatrix
+         * int[][] test = {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
+         * zeroMatrix(test, 3, 4);
+         * print2D(test,3,4);
+         */
+
         /* 
-        // LongestConsecutiveSubsequence
-        int[] test = { 100, 200, 1, 3, 2, 4 };
-        System.out.print(longConsecutiveSubsequence(test) + " ");
+        // Print Spiral Matrix
+        int test[][] = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } };
+        // int test[][] = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+        ArrayList<Integer> ans = spiralMatrix(test);
+        for (Integer item : ans) {
+            System.out.print(item + " ");
+        }
         */
-        
-        //ZeroMatrix
-        int[][] test = {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
-        zeroMatrix(test, 3, 4);
-        print2D(test,3,4);
+
+        //Count of subarray with sum K
+        int[] nums = {3, 1, 2, 4};
+        System.out.println("Count: "+ countOfSubarryaWithSumK(nums, 6));
+
     }
 
-    private static void print2D(int[][] test, int n, int m){
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                System.out.print(test[i][j]+" ");
+    private static void print2D(int[][] test, int n, int m) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                System.out.print(test[i][j] + " ");
             }
             System.out.println("");
         }
@@ -407,7 +424,7 @@ class ArrayMedium {
             if (!array.contains(it - 1)) {
                 int count = 1;
                 int number = it;
-                while (array.contains(number+1)) {
+                while (array.contains(number + 1)) {
                     number++;
                     count++;
                 }
@@ -416,49 +433,94 @@ class ArrayMedium {
         }
         return maxCount;
     }
+    private static void zeroMatrix(int[][] nums, int n, int m) {
 
-    // class pair{
-    //     public int num1;
-    //     public int num2;
-
-    //     public void getinput(int num1,int num2){
-    //         num1 = num1;
-    //         num2 = num2;
-    //     }
-    // }
-    private static void zeroMatrix(int[][] nums,int n, int m){
-        
         ArrayList<Integer> rows = new ArrayList<>();
         ArrayList<Integer> cols = new ArrayList<>();
         // ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
         // ans.add(0,{1,2});
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(nums[i][j]==0)
-                {
-                   rows.add(i);
-                   cols.add(j);
-                }    
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (nums[i][j] == 0) {
+                    rows.add(i);
+                    cols.add(j);
+                }
             }
         }
-        for(Integer it:rows){
-            System.out.print(it+" ");
+        for (Integer it : rows) {
+            System.out.print(it + " ");
         }
         System.out.println("");
-        for(Integer it:cols){
-            System.out.print(it+" ");
+        for (Integer it : cols) {
+            System.out.print(it + " ");
         }
         System.out.println("");
-        for(Integer index: rows){
-            for(int i=0;i<m;i++){
-                nums[index][i]=0;
+        for (Integer index : rows) {
+            for (int i = 0; i < m; i++) {
+                nums[index][i] = 0;
             }
         }
-        for(Integer index: cols){
-            for(int i=0;i<n;i++){
-                nums[i][index]=0;
+        for (Integer index : cols) {
+            for (int i = 0; i < n; i++) {
+                nums[i][index] = 0;
             }
         }
     }
-}
 
+    // Spiral Traversal of Matrix
+    private static ArrayList<Integer> spiralMatrix(int[][] nums) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        int top = 0, bottom = (nums.length) - 1, left = 0, right = nums[0].length - 1;
+        while (left <= right && top <= bottom) {
+            for (int i = left; i <= right; i++) {
+                ans.add(nums[top][i]);
+            }
+            top++;
+            for (int i = top; i <= bottom; i++) {
+                ans.add(nums[i][right]);
+            }
+            right--;
+            for (int i = right; i >= left; i--) {
+                ans.add(nums[bottom][i]);
+            }
+            bottom--;
+            for (int i = bottom; i >= top; i--) {
+                ans.add(nums[i][left]);
+            }
+            left++;
+        }
+        return ans;
+    }
+
+    private static int countOfSubarryaWithSumK(int[] nums, int sum){
+        /* 
+        // Bruteforce method
+        int count = 0;
+        for(int i=0;i<nums.length;i++){
+            int current_sum = sum;
+            int j=i;
+            while(current_sum>=0 && j<nums.length){
+                current_sum -= nums[j];
+                j++;
+                if(current_sum == 0)
+                count++;
+            }
+        }
+        return count;
+        */
+
+        //Optimal Solution
+        HashMap<Integer,Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int preSum = 0, count=0;
+        map.put(0,1);
+        for (int i = 0; i < nums.length; i++) {
+            preSum += nums[i];
+            int val = preSum - sum;
+            count += map.getOrDefault(val, 0);
+            map.put(preSum,map.getOrDefault(preSum, 0)+1);
+        }
+        return count;
+
+    }
+}
