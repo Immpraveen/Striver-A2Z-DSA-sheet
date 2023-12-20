@@ -67,22 +67,53 @@ class ArrayMedium {
          * leader(test);
          */
 
-        /* 
-        // LongestConsecutiveSubsequence
-        int[] test = { 100, 200, 1, 3, 2, 4 };
-        System.out.print(longConsecutiveSubsequence(test) + " ");
-        */
-        
-        //ZeroMatrix
-        int[][] test = {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
-        zeroMatrix(test, 3, 4);
-        print2D(test,3,4);
+        /*
+         * // LongestConsecutiveSubsequence
+         * int[] test = { 100, 200, 1, 3, 2, 4 };
+         * System.out.print(longConsecutiveSubsequence(test) + " ");
+         */
+
+        // //ZeroMatrix
+        // int[][] test = {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
+        // zeroMatrix(test, 3, 4);
+        // print2D(test,3,4);
+
+        // Rotate the matrix by 90
+        // int[][] nums = {{1,2,3},{4,5,6},{7,8,9}};
+        // int m=3,n=3;
+        // int [][] res = rotateByNinty(nums, 3, 3);
+        // for(int i=0;i<m;i++){
+        // for(int j=0;j<n;j++){
+        // System.out.print(res[i][j]+" ");
+        // }
+        // System.out.println( );
+        // }
+
+        // int[][] nums = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+        // rotateByNintyOptimal(nums, 3, 3);
+        // int m = 3, n = 3;
+        // for (int i = 0; i < m; i++) {
+        // for (int j = 0; j < n; j++) {
+        // System.out.print(nums[i][j] + " ");
+        // }
+        // System.out.println();
+        // }
+
+        // //Spiral of matrix
+        // int[][] nums = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+        // spiral(nums);
+
+        //Count of subarray with sum k
+        int[] nums = {3,1,2};
+        int res = countOfSubarrayWithSumK(nums, 3 );
+        System.out.println(res);
+
     }
 
-    private static void print2D(int[][] test, int n, int m){
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                System.out.print(test[i][j]+" ");
+    private static void print2D(int[][] test, int n, int m) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                System.out.print(test[i][j] + " ");
             }
             System.out.println("");
         }
@@ -407,7 +438,7 @@ class ArrayMedium {
             if (!array.contains(it - 1)) {
                 int count = 1;
                 int number = it;
-                while (array.contains(number+1)) {
+                while (array.contains(number + 1)) {
                     number++;
                     count++;
                 }
@@ -418,47 +449,102 @@ class ArrayMedium {
     }
 
     // class pair{
-    //     public int num1;
-    //     public int num2;
+    // public int num1;
+    // public int num2;
 
-    //     public void getinput(int num1,int num2){
-    //         num1 = num1;
-    //         num2 = num2;
-    //     }
+    // public void getinput(int num1,int num2){
+    // num1 = num1;
+    // num2 = num2;
     // }
-    private static void zeroMatrix(int[][] nums,int n, int m){
-        
+    // }
+    private static void zeroMatrix(int[][] nums, int n, int m) {
+
         ArrayList<Integer> rows = new ArrayList<>();
         ArrayList<Integer> cols = new ArrayList<>();
         // ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
         // ans.add(0,{1,2});
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(nums[i][j]==0)
-                {
-                   rows.add(i);
-                   cols.add(j);
-                }    
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (nums[i][j] == 0) {
+                    rows.add(i);
+                    cols.add(j);
+                }
             }
         }
-        for(Integer it:rows){
-            System.out.print(it+" ");
+        for (Integer it : rows) {
+            System.out.print(it + " ");
         }
         System.out.println("");
-        for(Integer it:cols){
-            System.out.print(it+" ");
+        for (Integer it : cols) {
+            System.out.print(it + " ");
         }
         System.out.println("");
-        for(Integer index: rows){
-            for(int i=0;i<m;i++){
-                nums[index][i]=0;
+        for (Integer index : rows) {
+            for (int i = 0; i < m; i++) {
+                nums[index][i] = 0;
             }
         }
-        for(Integer index: cols){
-            for(int i=0;i<n;i++){
-                nums[i][index]=0;
+        for (Integer index : cols) {
+            for (int i = 0; i < n; i++) {
+                nums[i][index] = 0;
             }
         }
     }
-}
 
+    // Bruteforce method
+    private static int[][] rotateByNinty(int[][] nums, int m, int n) {
+
+        int[][] res = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                res[j][n - 1 - i] = nums[i][j];
+            }
+        }
+        return res;
+    }
+
+    private static void rotateByNintyOptimal(int[][] nums, int m, int n) {
+        for (int i = 0; i < m; i++) {
+            for (int j = i; j < n; j++) {
+                int temp = nums[i][j];
+                nums[i][j] = nums[j][i];
+                nums[j][i] = temp;
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n / 2; j++) {
+                int temp = nums[i][j];
+                nums[i][j] = nums[i][n - 1 - j];
+                nums[i][n - 1 - j] = temp;
+            }
+        }
+    }
+
+    private static void spiral(int[][] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums.length; j++) {
+                if (i == 0 || i == nums.length - 1 || j == 0 || j == nums.length - 1)
+                    System.out.print(nums[i][j] + " ");
+                else {
+                    System.out.print((nums[i + 1][j] + nums[i][j + 1] + nums[i + 1][j + 1] + nums[i][j]) / 4 + " ");
+                }
+            }
+        }
+    }
+
+    private static int countOfSubarrayWithSumK(int[] nums, int k) {
+        int sum = k;
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum=k;
+            int j=i;
+            while (j < nums.length) {
+                sum = sum - nums[j];
+                j++;
+                if (sum == 0)
+                    count++;
+            }
+        }
+        return count;
+    }
+}
