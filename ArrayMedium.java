@@ -412,8 +412,8 @@ class ArrayMedium {
         }
         return maxCount;
     }
-    private static void zeroMatrix(int[][] nums, int n, int m) {
 
+    private static void zeroMatrix(int[][] nums, int n, int m) {
 
         ArrayList<Integer> rows = new ArrayList<>();
         ArrayList<Integer> cols = new ArrayList<>();
@@ -446,4 +446,4 @@ class ArrayMedium {
             }
         }
     }
-
+}
