@@ -73,27 +73,6 @@ class ArrayMedium {
          * System.out.print(longConsecutiveSubsequence(test) + " ");
          */
 
-        /*
-         * //ZeroMatrix
-         * int[][] test = {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
-         * zeroMatrix(test, 3, 4);
-         * print2D(test,3,4);
-         */
-
-        /* 
-        // Print Spiral Matrix
-        int test[][] = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } };
-        // int test[][] = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-        ArrayList<Integer> ans = spiralMatrix(test);
-        for (Integer item : ans) {
-            System.out.print(item + " ");
-        }
-        */
-
-        //Count of subarray with sum K
-        int[] nums = {3, 1, 2, 4};
-        System.out.println("Count: "+ countOfSubarryaWithSumK(nums, 6));
-
     }
 
     private static void print2D(int[][] test, int n, int m) {
@@ -435,6 +414,7 @@ class ArrayMedium {
     }
     private static void zeroMatrix(int[][] nums, int n, int m) {
 
+
         ArrayList<Integer> rows = new ArrayList<>();
         ArrayList<Integer> cols = new ArrayList<>();
         // ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
@@ -467,60 +447,3 @@ class ArrayMedium {
         }
     }
 
-    // Spiral Traversal of Matrix
-    private static ArrayList<Integer> spiralMatrix(int[][] nums) {
-        ArrayList<Integer> ans = new ArrayList<>();
-        int top = 0, bottom = (nums.length) - 1, left = 0, right = nums[0].length - 1;
-        while (left <= right && top <= bottom) {
-            for (int i = left; i <= right; i++) {
-                ans.add(nums[top][i]);
-            }
-            top++;
-            for (int i = top; i <= bottom; i++) {
-                ans.add(nums[i][right]);
-            }
-            right--;
-            for (int i = right; i >= left; i--) {
-                ans.add(nums[bottom][i]);
-            }
-            bottom--;
-            for (int i = bottom; i >= top; i--) {
-                ans.add(nums[i][left]);
-            }
-            left++;
-        }
-        return ans;
-    }
-
-    private static int countOfSubarryaWithSumK(int[] nums, int sum){
-        /* 
-        // Bruteforce method
-        int count = 0;
-        for(int i=0;i<nums.length;i++){
-            int current_sum = sum;
-            int j=i;
-            while(current_sum>=0 && j<nums.length){
-                current_sum -= nums[j];
-                j++;
-                if(current_sum == 0)
-                count++;
-            }
-        }
-        return count;
-        */
-
-        //Optimal Solution
-        HashMap<Integer,Integer> map = new HashMap<>();
-        map.put(0, 1);
-        int preSum = 0, count=0;
-        map.put(0,1);
-        for (int i = 0; i < nums.length; i++) {
-            preSum += nums[i];
-            int val = preSum - sum;
-            count += map.getOrDefault(val, 0);
-            map.put(preSum,map.getOrDefault(preSum, 0)+1);
-        }
-        return count;
-
-    }
-}
