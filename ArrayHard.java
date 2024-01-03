@@ -35,18 +35,26 @@ public class ArrayHard {
          * System.out.println(val + " ");
          * }
          */
-        
-        /* 
-        // Four sum to target
-        int[] nums = { 4, 3, 3, 4, 4, 2, 1, 2, 1, 1 };
-        ArrayList<ArrayList<Integer>> res = fourSum(nums, 9);
-        for (ArrayList<Integer> val : res) {
-            System.out.println(val);
-        }
-        */
-       
-        int[] nums = {9, -3, 3, -1, 6, -5};
+
+        /*
+         * // Four sum to target
+         * int[] nums = { 4, 3, 3, 4, 4, 2, 1, 2, 1, 1 };
+         * ArrayList<ArrayList<Integer>> res = fourSum(nums, 9);
+         * for (ArrayList<Integer> val : res) {
+         * System.out.println(val);
+         * }
+         */
+
+        /*Longest Subarray with sum zero  
+        int[] nums = { 9, -3, 3, -1, 6, -5 };
         System.out.println(longestSubarrayWithSumZero(nums));
+        */
+        
+        int[] nums = {4, 2, 2, 6, 4};
+        Set<List<Integer>> res = numSubarrayWithXorK(nums, 6);
+        for(List<Integer> item: res){
+            System.out.println(item);
+        }
     }
 
     private static ArrayList<ArrayList<Integer>> tripleSumZero(int[] nums) {
@@ -174,26 +182,49 @@ public class ArrayHard {
         return ans;
     }
 
-    private static int longestSubarrayWithSumZero(int[] nums){
-        /* 
-        //Naive Approach
-        int count = 0;
-        int max=0;
-        for(int i=0;i<nums.length;i++){
-            int sum=nums[i];
-            count=1;
-            for(int j=i+1;j<nums.length;j++){
-                sum += nums[j];
-                count++;
-                if(sum==0)
-                if(count>max)
-                max = count;
-            }   
+    private static int longestSubarrayWithSumZero(int[] nums) {
+        /*
+         * //Naive Approach
+         * int count = 0;
+         * int max=0;
+         * for(int i=0;i<nums.length;i++){
+         * int sum=nums[i];
+         * count=1;
+         * for(int j=i+1;j<nums.length;j++){
+         * sum += nums[j];
+         * count++;
+         * if(sum==0)
+         * if(count>max)
+         * max = count;
+         * }
+         * }
+         * return max;
+         */
+        
+        int sum = 0, max = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if(sum==0)
+            max = i+1;
+            else{
+                if(map.get(sum)!=null){
+                    max = max(max,i-map.get(sum));
+                }
+                else{
+                    map.put(sum,i);
+                }
+            }
         }
         return max;
-        */
+    }
 
-        
+    private static int max(int a, int b) {
+        if (a > b)
+            return a;
+        else
+            return b;
     }
 
     private static int factorial(int num) {
@@ -242,4 +273,27 @@ public class ArrayHard {
         return res;
     }
 
+    private static Set<List<Integer>> numSubarrayWithXorK(int[] nums, int k){
+
+        //Bruteforce
+        int index=0;
+        int count=0;
+        List<Integer> sets = new ArrayList<>();
+        ArrayList<List<Integer>> combinations = new ArrayList<>();
+        Set<ArrayList<Integer>> res = new HashSet<>();
+        for(int i=0;i<nums.length;i++){
+            int number = nums[i];
+            sets.add(number);
+            for(int j=i+1;j<nums.length;j++){
+                int xor = number ^ nums[j];
+                sets.add(nums[j]);
+                if(xor==k){
+                    count++;
+                    sets.sort(null);
+                }
+            }
+        }
+        
+       
+    }
 }
