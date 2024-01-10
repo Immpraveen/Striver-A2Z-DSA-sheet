@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -46,18 +46,60 @@ public class ArrayHard {
          * }
          */
 
-        /*Longest Subarray with sum zero  
-        int[] nums = { 9, -3, 3, -1, 6, -5 };
-        System.out.println(longestSubarrayWithSumZero(nums));
-        */
-        
-        // To find the count and set of subrray with xor K
-        int[] nums = {4, 2, 2, 6, 4};
-        // Set<ArrayList<Integer>> res = numSubarrayWithXorK(nums, 5);
-        // for(ArrayList<Integer> item: res){
-        //     System.out.println(item);
-        // }
-        System.out.println(numSubarrayWithXorK(nums, 6));
+        /*
+         * Longest Subarray with sum zero - count
+         * int[] nums = {9, -3, 3, -1, 6, -5};
+         * System.out.println(longestSubarrayWithSumZero(nums));
+         */
+
+        /*
+         * //Overlapping Subarray Implementation
+         * int[][] nums = {{1, 3}, {8, 10}, {2, 6}, {15, 18}};
+         * List<List<Integer>> res = overlappingSubarray(nums);
+         * for(List<Integer> item : res){
+         * System.out.println(item);
+         * }
+         */
+
+        /*
+         * //MergeSorted Arrays
+         * int[] num1 = {1, 4, 8, 10};
+         * int[] num2 = {2, 3, 9};
+         * 
+         * mergeSortedArrays(num1, num2);
+         * 
+         * for(int i=0;i<num1.length;i++){
+         * System.out.print(num1[i]+" ");
+         * }
+         * System.out.println();
+         * for(int i=0;i<num2.length;i++){
+         * System.out.print(num2[i]+" ");
+         * }
+         */
+
+        /*
+         * // Find duplicate and missing element from and array
+         * int[] nums = {3,1,2,5,3};
+         * int[] res = duplicateAndMissing(nums);
+         * for (int i=0;i<res.length;i++) {
+         * System.out.print(res[i]+" ");
+         * }
+         */
+        /*
+         * // Count Inversion where i<j and num[i]>num[j]
+         * int[] nums = {5,3,2,4,1};
+         * System.out.println(countInversions(nums));
+         */
+
+        /*
+         * //Count reverse pairs where i<j and arr[i]>2*arr[j]
+         * int[] nums = {1,3,2,3,1};
+         * System.out.println(countReverse(nums));
+         */
+
+        // Max Product Subarray
+        int[] nums = { 1, 2, -3, 0, -4, -5 };
+        System.out.println(maxProductSubarray(nums));
     }
 
     private static ArrayList<ArrayList<Integer>> tripleSumZero(int[] nums) {
@@ -203,31 +245,23 @@ public class ArrayHard {
          * }
          * return max;
          */
-        
         int sum = 0, max = 0;
         HashMap<Integer, Integer> map = new HashMap<>();
 
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
-            if(sum==0)
-            max = i+1;
-            else{
-                if(map.get(sum)!=null){
-                    max = max(max,i-map.get(sum));
-                }
-                else{
-                    map.put(sum,i);
+            if (sum == 0)
+                max = i + 1;
+            else {
+                if (map.get(sum) != null) {
+                    max = Math.max(max, i - map.get(sum));
+                } else {
+                    map.put(sum, i);
                 }
             }
         }
         return max;
-    }
 
-    private static int max(int a, int b) {
-        if (a > b)
-            return a;
-        else
-            return b;
     }
 
     private static int factorial(int num) {
@@ -276,53 +310,170 @@ public class ArrayHard {
         return res;
     }
 
-    private static int numSubarrayWithXorK(int[] nums, int k){
+    public static List<List<Integer>> overlappingSubarray(int[][] nums) {
 
-        /* 
-        //Better Approach
-        int count=0;
-        List<Integer> sets = new ArrayList<>();
-        Set<ArrayList<Integer>> res = new HashSet<>();
-        for(int i=0;i<nums.length;i++){
-            int xor = 0;
-            for(int j=i;j<nums.length;j++){
-                xor = xor ^ nums[j];
-                sets.add(nums[j]);
-                if(xor==k){
-                    count++;
-                    sets.sort(null);
-                    ArrayList<Integer> temp = new ArrayList<>(sets);
-                    res.add(temp);
-                } 
+        Arrays.sort(nums, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return a[0] - b[0];
+            }
+        });
+
+        List<List<Integer>> ans = new ArrayList<>();
+        /*
+         * //Bruteforce Approach
+         * for(int i=0;i<nums.length;i++){
+         * int start = nums[i][0];
+         * int end = nums[i][1];
+         * 
+         * if(!ans.isEmpty() && end<= ans.get(ans.size()-1).get(1)){
+         * continue;
+         * }
+         * for(int j=i+1;j<nums.length;j++){
+         * if(nums[j][0] <= end){
+         * end = Math.max(end,nums[j][1]);
+         * }else{
+         * break;
+         * }
+         * }
+         * ans.add(Arrays.asList(start,end));
+         * }
+         */
+
+        for (int i = 0; i < nums.length; i++) {
+            if (ans.isEmpty() || nums[i][0] > ans.get(ans.size() - 1).get(1)) {
+                ans.add(Arrays.asList(nums[i][0], nums[i][1]));
+            } else {
+                ans.get(ans.size() - 1).set(1,
+                        Math.max(ans.get(ans.size() - 1).get(1), nums[i][1]));
             }
         }
-        System.out.println(count);
-      return res; 
-      */
-
-      int xor = 0;
-      Map<Integer, Integer> mpp = new HashMap<>();
-      mpp.put(xor,1);
-      int count = 0;
-
-      for(int i=0;i<nums.length;i++){
-        xor = xor ^ nums[i];
-        int x = xor ^ k;
-
-        if(mpp.containsKey(x)){
-            count  += mpp.get(x);
-        }
-        if(mpp.containsKey(xor)){
-            mpp.put(xor, mpp.get(xor)+1);
-        }
-        else{
-            mpp.put(xor,1);
-        }
-      }
-      return count;
+        return ans;
     }
 
-    
+    private static void mergeSortedArrays(int[] num1, int[] num2) {
 
-    
+        int iteration = Math.max(num1.length, num2.length);
+        int num1Pointer = 0;
+        int num2Pointer = 0;
+
+        for (int i = 0; i < iteration; i++) {
+            while (num1[num1Pointer] < num2[num2Pointer]) {
+                if (num1Pointer == num1.length - 1) {
+                    break;
+                }
+                num1Pointer++;
+            }
+            swap(num1, num2, num1Pointer, num2Pointer);
+
+            Arrays.sort(num2);
+        }
+        swap(num1, num2, num1Pointer, num2Pointer);
+    }
+
+    private static void swap(int[] num1, int[] num2, int num1Pointer, int num2Pointer) {
+        int temp = num1[num1Pointer];
+        num1[num1Pointer] = num2[num2Pointer];
+        num2[num2Pointer] = temp;
+    }
+
+    private static int[] duplicateAndMissing(int[] nums) {
+
+        // Better Approach
+
+        int count = 0;
+        int missing = -1, duplicate = -1;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            count = map.getOrDefault(nums[i], 0) + 1;
+            map.put(nums[i], count);
+        }
+
+        for (int i = 1; i <= nums.length; i++) {
+            if (map.get(i) == 0) {
+                missing = i;
+            } else if (map.get(i) == 2) {
+                duplicate = i;
+            }
+
+        }
+        int[] ans = { missing, duplicate };
+        return ans;
+
+        // int n = nums.length; // size of the array
+        // int repeating = -1, missing = -1;
+
+        // //Find the repeating and missing number:
+        // for (int i = 1; i <= n; i++) {
+        // //Count the occurrences:
+        // int cnt = 0;
+        // for (int j = 0; j < n; j++) {
+        // if (nums[j] == i) cnt++;
+        // }
+
+        // if (cnt == 2) repeating = i;
+        // else if (cnt == 0) missing = i;
+
+        // if (repeating != -1 && missing != -1)
+        // break;
+        // }
+        // int[] ans = {repeating, missing};
+        // return ans;
+    }
+
+    private static int countInversions(int[] nums) {
+
+        // Bruteforce approach && For optimal solution use Merge sort logic
+        int count = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (i < j && nums[i] > nums[j]) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private static int countReverse(int[] nums) {
+        // Bruteforce Approach && use Merge Sort Algorithm for Optimal Approach
+        int count = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] > 2 * nums[j]) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private static int maxProductSubarray(int[] nums) {
+        int product = 1;
+
+        /*
+         * //Better Approach
+         * for (int i = 0; i < nums.length - 1; i++) {
+         * int mul = nums[i];
+         * for (int j = i + 1; j < nums.length; j++) {
+         * mul *= nums[j];
+         * product = Math.max(mul, product);
+         * }
+         * 
+         * }
+         */
+        // Optimal Approach
+        int prefix = 1, suffix = 1;
+        for (int i = 0; i < nums.length; i++) {
+            if (prefix == 0)
+                prefix = 1;
+            if (suffix == 0)
+                suffix = 1;
+            prefix = prefix * nums[i];
+            suffix = suffix * nums[nums.length-i-1];
+            product = Math.max(product,Math.max(prefix,suffix));
+
+        }
+        return product;
+    }
+
 }
