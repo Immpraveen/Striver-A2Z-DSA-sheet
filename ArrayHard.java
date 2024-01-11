@@ -471,7 +471,6 @@ public class ArrayHard {
             prefix = prefix * nums[i];
             suffix = suffix * nums[nums.length-i-1];
             product = Math.max(product,Math.max(prefix,suffix));
-
         }
         return product;
     }
