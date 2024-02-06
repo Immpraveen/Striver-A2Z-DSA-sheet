@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 class Node {
     int val;
     Node next;
@@ -15,6 +17,7 @@ class Node {
 
 public class SinglyLinkedList {
     public static void main(String[] args) {
+       /*  
         Node start = new Node(23);
         Node temp = new Node(24);
         Node end = new Node(25);
@@ -42,6 +45,18 @@ public class SinglyLinkedList {
         // Traverse all the elements in the LL
         traverse(start);
 
+        */
+        int[] num1 = {2,4,9};
+        int[] num2 = {5,6,4,9};
+        // int[] nums = {9,9,9};
+        //Node head = createLL(nums);
+        // traverse(head);
+        // head = doubleIt(head);
+        // traverse(head);
+        Node head1 = createLL(num1);
+        Node head2 = createLL(num2);
+
+        traverse(addTwoNumbers(head1,head2));
     }
 
     private static void traverse(Node iterator) {
@@ -161,4 +176,94 @@ public class SinglyLinkedList {
         return head;
     }
 
+    private static Node doubleIt(Node head){
+        String s = "";
+        Node iterator = head;
+        while(iterator!=null){
+            s += iterator.val;
+            iterator = iterator.next;
+        }  
+        iterator = head;
+        Long intialNumber = Long.parseLong(s);
+        Long num = Long.parseLong(s) * 2;
+        s = "";
+        s += num;
+
+        System.out.println(s);
+        iterator = head;
+        Node pre = null;
+
+        if(intialNumber.toString().length()==num.toString().length()){
+            for(int i = 0;i<s.length();i++){
+            int val = Character.getNumericValue(s.charAt(i));
+            iterator.val = val;
+            iterator = iterator.next;
+            if(iterator==null)
+            break;
+            }
+            return head;
+        }
+        else{
+            for(int i = 0;i<s.length();i++){
+                int val = Character.getNumericValue(s.charAt(i));
+                if(iterator==null){
+                    Node temp = new Node(val,null);
+                    pre.next = temp;
+                    return head;
+                }
+                pre=iterator;
+                iterator.val = val;
+                iterator = iterator.next;
+            }
+        }
+        return head;
+    }    
+
+    private static Node addTwoNumbers(Node l1, Node l2) {
+        if(l1==null|| l2==null){
+            if(l1==null){
+                return l2;
+            }
+            else return l1;
+        }
+        else{
+            String s = "";
+            Node iterator1 = l1;
+            Node iterator2 = l2; 
+            long res = 0;
+            while(iterator1!=null){
+                s += iterator1.val;
+                iterator1 = iterator1.next;
+            }
+            long val1 = Long.parseLong(s);
+            s="";
+            while(iterator2!=null){
+                s += iterator2.val;
+                iterator2 = iterator2.next;
+            }
+            long val2 = Long.parseLong(s);
+            s="";
+            res = val1 + val2;
+            s += res;
+
+            Node head = new Node(Integer.parseInt(s.substring(0,1)));
+            Node iterator = head;
+
+            for(int i=1;i<s.length();i++){
+            Node temp = new Node(Integer.parseInt(s.substring(i,i+1)));
+            iterator.next = temp;
+            iterator=iterator.next;
+            }
+            Node curr = head;
+            Node prev= null;
+            Node tempNext = head;
+            while(curr!=null){
+                tempNext=tempNext.next;
+                curr.next=prev;
+                prev=curr;
+                curr=tempNext;
+            }
+            return prev;
+        }
+    }
 }

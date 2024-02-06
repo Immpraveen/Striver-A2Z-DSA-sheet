@@ -28,11 +28,13 @@ public class DoublyLinkedList {
         // head = insert(head,6,6);
         // iterate(head);
 
-        int[] nums = {};
+        int[] nums = {20, 10, 10};
         DoublyNode head = creatDoublyLL(nums);
+        // head = delete(head,4);
+        // head = delete(head, 30);
+        head = deleteAllOccurrences(head, 10);
         iterate(head);
-
-        
+         
     }
 
     private static DoublyNode creatDoublyLL(int[] nums){
@@ -46,6 +48,81 @@ public class DoublyLinkedList {
             return head;
         }
     }
+
+    private static DoublyNode delete(DoublyNode head, int val){
+        if(head==null){
+            return null;
+        }
+        else if(head.val==val){
+            head.next.prev = null;
+            head = head.next;
+        }
+        else if(head!=null){
+            DoublyNode iterator = head;
+            DoublyNode prev = null;
+            while(iterator.val!=val && iterator.next!=null){
+                prev = iterator;
+                iterator=iterator.next;
+            }
+            if(iterator.next==null){
+                prev.next = null;
+            }else{
+                iterator.prev.next = iterator.next;
+                iterator.next.prev = iterator.prev;
+            }
+            
+        }
+        return head;
+    }
+
+    // private static DoublyNode deleteAll(DoublyNode head, int k){
+        
+    //     if(head==null){
+    //         return null;
+    //     }
+    //     else{
+    //         DoublyNode curr = head;
+    //         while(curr.val==k){
+    //             curr = curr.next;
+    //         }
+    //         head = curr;
+    //         while(curr.next!=null){
+    //             if(curr.val == k){
+    //                 head = delete(head, k);
+    //             }
+    //             curr = curr.next;
+    //         }
+    //     }
+    //     return head;
+    // }
+
+    public static DoublyNode deleteAllOccurrences(DoublyNode head, int k){
+        // Node prev = null;
+        DoublyNode curr = head;
+        // DoublyNode temp = null;
+
+        while(curr!=null){
+            if(curr.val == k && curr == head ){
+                head = curr.next;
+                curr = curr.next;
+                if(curr.prev!=null)
+                curr.prev = null;
+            }
+            else if(curr.next!=null && curr.val == k){
+                curr.prev.next = curr.next;
+                curr.next.prev = curr.prev;
+                curr = curr.next;
+            }
+            else if(curr.val==k && curr.next==null){
+                curr.prev.next = null;
+                curr = curr.next;
+            }
+            else{
+                curr=curr.next;
+            }
+        }
+        return head;
+    }       
 
     private static void iterate(DoublyNode head){
         DoublyNode iterator = head;
